@@ -343,36 +343,92 @@ void write_csv_line(std::ostream & out, const data & dat, const result & res)
         << dat.Ptot() << ";" << dat.Qtot() << std::endl;
 }
 
-int main()
+const int nbArgs = 5;
+
+int main(int argc, char **argv)
 {
-    fs::path path_in("./DataProjet2022_v1.csv");
-    std::vector<data> file_data = read_csv(path_in, 100);
+    // check arguments and fill variables
+    double x[nbArgs];
 
-    fs::path path_out("data_out.csv");
-    for(int i = 1; fs::exists(path_out); ++i)
+    bool x0read = false;
+    if (argc >= 2)
     {
-        path_out.replace_filename("data_out(" + std::to_string(i) + ").csv");
-    }
-
-    std::ofstream out(path_out, std::ios::trunc);
-
-    write_csv_head(out);
-
-    for(const data & line : file_data)
-    {
-        params par =
+        std::string x0file = argv[1];
+        std::ifstream in(argv[1]);
+        for (int i = 0; i < nbArgs; i++)
         {
-            .Qmax = line.Qmax,
-            .Hamont = line.Hamont,
-            .turbines_disponibles = {true, true, true, true, true}, 
-        };
-
-        result res = optimise(par);
-
-        write_csv_line(out, line, res);
+            if (in.fail())
+            {
+                std::cerr << "Error reading file " << x0file << " for x0." << std::endl;
+                x0read = false;
+                break;
+            }
+            in >> x[i];
+            x0read = true;
+        }
+        in.close();
     }
 
-    out.close();
+    const float hAmont = 130.0;
+    float qMax = 600.0;
+
+    const float Haval = H_aval(qMax);
+
+    for (size_t i = 0; i < nbArgs; i++)
+    {
+        qMax -= x[i];
+    }
+
+    if (qMax < 0.0)
+    {
+        std::cout << std::numeric_limits<float>::max() -1 << std::endl;
+        return 0;
+    }
+
+    float res = 0.0;
+
+    for (size_t i = 0; i < nbArgs; i++)
+    {
+        float qi = x[i];
+        const float Hchute = hAmont - Haval - 0.5e-5 * qi * qi;
+        res += P_turb[i](Hchute, qi);
+    }
+
+    std::cout << -res << std::endl;
 
     return 0;
 }
+
+    // int main()
+    // {
+    //     fs::path path_in("./DataProjet2022_v1.csv");
+    //     std::vector<data> file_data = read_csv(path_in, 100);
+
+    //     fs::path path_out("data_out.csv");
+    //     for(int i = 1; fs::exists(path_out); ++i)
+    //     {
+    //         path_out.replace_filename("data_out(" + std::to_string(i) + ").csv");
+    //     }
+
+    //     std::ofstream out(path_out, std::ios::trunc);
+
+    //     write_csv_head(out);
+
+    //     for(const data & line : file_data)
+    //     {
+    //         params par =
+    //         {
+    //             .Qmax = line.Qmax,
+    //             .Hamont = line.Hamont,
+    //             .turbines_disponibles = {true, true, true, true, true},
+    //         };
+
+    //         result res = optimise(par);
+
+    //         write_csv_line(out, line, res);
+    //     }
+
+    //     out.close();
+
+    //     return 0;
+    // }

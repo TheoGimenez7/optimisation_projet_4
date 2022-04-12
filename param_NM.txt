@@ -1,0 +1,31 @@
+# PROBLEM PARAMETERS
+####################
+
+# Number of variables
+DIMENSION 5
+
+# Black box
+BB_EXE projet2_NM.exe
+BB_OUTPUT_TYPE OBJ
+
+# Starting point
+# Q1, Q2, Q3, Q4,Q5
+X0 ( 0.0 0.0 0.0 0.0 0.0 )
+
+# ALGORITHM PARAMETERS
+######################
+
+LOWER_BOUND    * 0           # all variables are >= 0
+UPPER_BOUND    * 160         # all variables are <= 160
+
+# Use Nelder Mead algorithm, not Mads, to solve this problem
+#NM_OPTIMIZATION false
+
+# The algorithm terminates after that number black-box evaluations
+MAX_BB_EVAL 4000
+
+# DISPLAY PARAMETERS
+####################
+# Show more info - display degree = 3
+DISPLAY_DEGREE 1
+DISPLAY_MAX_STEP_LEVEL 1
