@@ -1,3 +1,13 @@
+#ifndef  MAC_HAMONT
+#warning MAC_HAMONT should be defind
+#define MAC_HAMONT 0
+#endif // ! MAC_HAMONT
+
+#ifndef  MAC_QMAX
+#warning MAC_QMAX should be defind
+#define MAC_QMAX 0
+#endif // ! MAC_QMAX
+
 #include <iostream>
 #include <array>
 #include <functional>
@@ -369,8 +379,8 @@ int main(int argc, char **argv)
         in.close();
     }
 
-    const float hAmont = 130.0;
-    float qMax = 600.0;
+    const float hAmont = MAC_HAMONT;
+    float qMax         = MAC_QMAX;
 
     const float Haval = H_aval(qMax);
 

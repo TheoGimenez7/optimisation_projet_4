@@ -26,6 +26,7 @@ MAX_BB_EVAL 4000
 
 # DISPLAY PARAMETERS
 ####################
-# Show more info - display degree = 3
+# Show more info - display degree = 1
 DISPLAY_DEGREE 1
 DISPLAY_MAX_STEP_LEVEL 1
+SOLUTION_FILE sol.txt

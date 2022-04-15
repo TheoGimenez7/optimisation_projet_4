@@ -1,7 +1,9 @@
 # Optimisation_projet_2
  
 ```bash
-g++ -o projet2 projet2.cpp --std=c++20 && ./projet2.exe
+g++ -DMAC_HAMONT=130 -DMAC_QMAX=600 -o projet2_NM projet2_NM.cpp --std=c++20 && ./projet2_NM.exe
+
+g++ -o projet4 projet4.cpp --std=c++20 && ./projet4.exe
 ```
 
 
